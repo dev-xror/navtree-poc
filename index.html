@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>NavTree POC</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    </head>
+    <body>
+        <h1>NavTree POC</h1>
+        <p>✨ A light weight navigation tree library project based on webpack.</p>
+        <div id="tree"  data-id="tree" class="tree"></div>
+        <script src="./dist/navtree.js"></script>
+        <script>
+            window.onload = function(){
+                const data = {
+                    id: 'fruit',
+                    name: 'Fruit',
+                    children: [{
+                        id: 'apple',
+                        name: 'Apple'
+                    }, {
+                        id: 'banana',
+                        name: 'Banana',
+                        children: [{
+                            id: 'cherry',
+                            name: 'Cherry',
+                            loadOnDemand: true
+                        }]
+                    }]
+                };
+                
+                const config = {
+                    el: document.querySelector('#tree'),
+                    options: {
+                        data: data,
+                        autoOpen: true, // Defaults to false
+                        droppable: { // Defaults to false
+                            hoverClass: 'infinite-tree-droppable-hover',
+                            accept: function(event, options) {
+                                return true;
+                            },
+                            drop: function(event, options) {
+                            }
+                        },
+                        loadNodes: function(parentNode, next) {
+                            // Loading...
+                            const nodes = [];
+                            nodes.length = 1000;
+                            for (let i = 0; i < nodes.length; ++i) {
+                                nodes[i] = {
+                                    id: parentNode.id + "." + i,
+                                    name: parentNode.name + "." + i,
+                                    loadOnDemand: true
+                                };
+                            }
+                    
+                            next(null, nodes, function() {
+                                // Completed
+                            });
+                        },
+                        nodeIdAttr: 'data-id', // the node id attribute
+                        /*
+                        rowRenderer: function(node, treeOptions) { // Customizable renderer
+                            return '<div data-id="<node-id>" class="infinite-tree-item">' + node.name + '</div>';
+                        },*/
+                    },
+                    callback: {
+                        handlesOnClick: function(event, vm){
+                            console.log("html click");
+                        }
+                    }
+                };
+
+                NavTree.run(config);
+
+            };
+        </script>
+    </body>
+</html>
