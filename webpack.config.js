@@ -6,7 +6,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
+    //new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
     new webpack.NoEmitOnErrorsPlugin()
   ],
   devtool: 'source-map',
